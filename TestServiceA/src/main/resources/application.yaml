@@ -1,0 +1,69 @@
+EUREKA: localhost
+DATABASE_URL: your-database-url
+DATABASE_PORT: 5434
+KAFKA_URL: your-kafka-url
+KAFKA_PORT: 9092
+
+spring:
+  application:
+    name: test-service-a
+  datasource:
+    url: jdbc:mariadb://${DATABASE_URL}:${DATABASE_PORT}/springdata
+    driver-class-name: org.mariadb.jdbc.Driver
+    username: springuser
+    password: springpass
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+logging:
+  level:
+    root: info
+    com:
+      harm: debug
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+
+server:
+  port: 8091
+  servlet:
+    context-path: /test/msa/a
+
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://${EUREKA}:8761/eureka
+
+simple-service-type-a:
+  ribbon:
+    eureka:
+      enabled: true
+    ServerListRefreshInterval: 15000
+    MaxAutoRetries: 0
+
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    connection-timeout: 30000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+kafka:
+  url: ${KAFKA_URL}:${KAFKA_PORT}

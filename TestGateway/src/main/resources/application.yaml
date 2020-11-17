@@ -1,0 +1,30 @@
+EUREKA: localhost
+
+spring:
+  application:
+    name: test-spring-gateway
+  cloud:
+    gateway:
+      routes:
+        -
+          id: test-service-a
+          uri: lb://TEST-SERVICE-A
+          predicates:
+            - Path=/test/msa/a/**
+        -
+          id: test-service-b
+          uri: lb://TEST-SERVICE-B
+          predicates:
+            - Path=/test/msa/b/**
+
+server:
+  port: 8070
+  servlet:
+    context-path: /gateway
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://${EUREKA}:8761/eureka
+  instance:
+    prefer-ip-address: true

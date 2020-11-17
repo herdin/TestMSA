@@ -1,0 +1,5 @@
+rootProject.name = 'TestMSA'
+include 'TestEureka'
+include 'TestGateway'
+include 'TestServiceA'
+
